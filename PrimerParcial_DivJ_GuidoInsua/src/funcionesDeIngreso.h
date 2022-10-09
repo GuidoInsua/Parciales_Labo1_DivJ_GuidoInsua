@@ -42,6 +42,19 @@ int pedirFlotante(float* direccion, float minimo, float maximo, char mensaje[], 
 int pedirStringAlfabetico(char cadena[], int tam, char mensaje[], char mensajeError[],char extendido);
 
 /**
+ * \fn int pedirCaracter(char*, char, char, char*, char*)
+ * \brief Pide el ingreso de un caracter y valida que este entre el minimo y maximo de la tabla ASCII
+ *
+ * \param direccion , char puntero donde se va a guardar el char ingresado
+ * \param minimo , char minivo caracter posible
+ * \param maximo , char maximo caracter posible
+ * \param mensaje , cadena el texto que se quiere imprimir para pedir el numero
+ * \param mensajeError , cadena el texto que se quiere imprimir si hay algun error
+ * \return Retorna 0 si todo fue exitoso, o -1 si se ingreso mal algun parametro
+ */
+int pedirCaracter(char* direccion, char minimo, char maximo, char* mensaje, char* mensajeError);
+
+/**
  * \fn int pedirCharDosOpciones(char*, char, char, char[], char[])
  * \brief Pide el ingreso de un caracter y valida que sea una de dos opciones dadas
  *

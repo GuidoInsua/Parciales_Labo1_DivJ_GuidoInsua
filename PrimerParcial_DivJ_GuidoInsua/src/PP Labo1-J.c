@@ -5,6 +5,19 @@
  * DNI: 42806238
  */
 
+/*
+			{
+					{1001,"Parlante",24234,131312,1003,1},
+					{1002,"Celu",24234,131312,1001,1},
+					{1003,"Linterna",24234,131312,1001,1},
+					{1004,"Proyector",24234,131312,1004,1},
+					{1005,"Camara",24234,131312,1004,1},
+					{1006,"Auriculares",24234,131312,1003,1},
+					{1007,"Tele",24234,131312,1004,1},
+					{1008,"Arduino",24234,131312,1001,1}
+			};
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "funcionesDistribuidora.h"
@@ -20,15 +33,15 @@ int main(void)
 
 	eRubro rubros[TAMRUBROS] =
 			{
-					{1,"Electronica"},
-					{2,"Blanco"},
-					{3,"Audio"},
-					{4,"Video"}
+					{1001,"Electronica"},
+					{1002,"Blanco"},
+					{1003,"Audio"},
+					{1004,"Video"}
 			};
 	eArticulo articulos[TAMARTICULOS];
 	eVenta ventas[TAMVENTAS];
 
-	int opcion;
+	char opcion;
 	char continuar;
 	int idAutoIncrementalArticulos;
 
@@ -42,16 +55,16 @@ int main(void)
 
 		switch(opcion)
 		{
-			case 1: //ALTA ARTICULOS
+			case 'A': //ALTA ARTICULOS
 
 				altaArticulo(articulos, TAMARTICULOS, rubros, TAMRUBROS, &idAutoIncrementalArticulos);
 			break;
 
-			case 2: //MODIFICAR ARTICULOS
+			case 'B': //MODIFICAR ARTICULOS
 
-				if(opcion == 1)
+				if(idAutoIncrementalArticulos > 1000)
 				{
-					printf("\nK");
+					modificarArticulo(articulos, TAMARTICULOS, rubros, TAMRUBROS);
 				}
 				else
 				{
@@ -59,11 +72,11 @@ int main(void)
 				}
 			break;
 
-			case 3: //BAJA ARTICULOS
+			case 'C': //BAJA ARTICULOS
 
-				if(opcion == 1)
+				if(idAutoIncrementalArticulos > 1000)
 				{
-					printf("\nK");
+					darDeBajaArticulo(articulos, TAMARTICULOS, rubros, TAMRUBROS);
 				}
 				else
 				{
@@ -71,9 +84,9 @@ int main(void)
 				}
 			break;
 
-			case 4: //LISTAR ARTICULOS
+			case 'D': //LISTAR ARTICULOS
 
-				if(opcion == 4)
+				if(idAutoIncrementalArticulos > 1000)
 				{
 					listarArticulos(articulos, TAMARTICULOS, rubros, TAMRUBROS);
 				}
@@ -83,9 +96,21 @@ int main(void)
 				}
 			break;
 
-			case 5: //LISTAR RUBROS
+			case 'E': //LISTAR RUBROS
 
-				if(opcion == 1)
+				if(idAutoIncrementalArticulos > 1000)
+				{
+					mostrarRubros(rubros, TAMRUBROS);
+				}
+				else
+				{
+					printf("\nNo se cargo ningun articulo");
+				}
+			break;
+
+			case 'F': //ALTA VENTA
+
+				if(idAutoIncrementalArticulos > 1000)
 				{
 					printf("\nK");
 				}
@@ -95,9 +120,9 @@ int main(void)
 				}
 			break;
 
-			case 6: //ALTA VENTA
+			case 'G': //LISTAR VENTAS
 
-				if(opcion == 1)
+				if(idAutoIncrementalArticulos > 1000)
 				{
 					printf("\nK");
 				}
@@ -107,21 +132,9 @@ int main(void)
 				}
 			break;
 
-			case 7: //LISTAR VENTAS
+			case 'H': //Informes
 
-				if(opcion == 1)
-				{
-					printf("\nK");
-				}
-				else
-				{
-					printf("\nNo se cargo ningun articulo");
-				}
-			break;
-
-			case 8: //Informes
-
-				if(opcion == 2)
+				if(idAutoIncrementalArticulos > 1000)
 				{
 					printf("\nK");
 				}

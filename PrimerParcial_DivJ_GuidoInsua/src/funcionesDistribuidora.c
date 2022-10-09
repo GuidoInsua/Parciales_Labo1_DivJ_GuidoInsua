@@ -8,28 +8,28 @@
 
 #define TAMDESCRIPCION 31
 
-int mostrarMenu(int* opcion)
+int mostrarMenu(char* opcion)
 {
 	int retorno;
-	int buffer;
+	char buffer;
 
 	if(opcion != NULL)
 	{
-		printf("\n+-----------------------+");
+		printf("\n\n+-----------------------+");
 		printf("\n|\t%-*s|",16,"MENU");
 		printf("\n+-----------------------+");
-		printf("\n| %-*s|",22,"1.Alta Articulo");
-		printf("\n| %-*s|",22,"2.Modificar Articulo");
-		printf("\n| %-*s|",22,"3.Baja Articulo");
-		printf("\n| %-*s|",22,"4.Listar Articulos");
-		printf("\n| %-*s|",22,"5.Listar Rubros");
-		printf("\n| %-*s|",22,"6.Alta Venta");
-		printf("\n| %-*s|",22,"7.Listar Ventas");
-		printf("\n| %-*s|",22,"8.Informes");
-		printf("\n| %-*s|",22,"9.Salir");
+		printf("\n| %-*s|",22,"A.Alta Articulo");
+		printf("\n| %-*s|",22,"B.Modificar Articulo");
+		printf("\n| %-*s|",22,"C.Baja Articulo");
+		printf("\n| %-*s|",22,"D.Listar Articulos");
+		printf("\n| %-*s|",22,"E.Listar Rubros");
+		printf("\n| %-*s|",22,"F.Alta Venta");
+		printf("\n| %-*s|",22,"G.Listar Ventas");
+		printf("\n| %-*s|",22,"H.Informes");
+		printf("\n| %-*s|",22,"I.Salir");
 		printf("\n+-----------------------+");
 
-		pedirEntero(&buffer, 1, 9, "\n---Ingrese una opcion: ", "ERROR, Ingrese un numero entre 1 y 6");
+		pedirCaracter(&buffer, 'A', 'I', "\n---Ingrese una opcion: ", "ERROR, Ingrese una opcion entre A e I");
 
 		*opcion = buffer;
 
@@ -72,7 +72,7 @@ int iniciarIsEmpty(eArticulo* articulos,int tamArticulos,eVenta* ventas,int tamV
 
 //-------------------------------------------------------------------------------------------------------------------------
 
-int buscarArticulo(eArticulo* articulos,int tamArticulos,int* indice)
+int buscarArticuloVacio(eArticulo* articulos,int tamArticulos,int* indice)
 {
 	int retorno;
 
@@ -113,12 +113,12 @@ int altaArticulo(eArticulo* articulos,int tamArticulos,eRubro* rubros,int tamRub
 
 	if(articulos != NULL && tamArticulos > 0 && rubros != NULL && tamRubros > 0 && idArticulo != NULL)
 	{
-		if(buscarArticulo(articulos, tamArticulos, &indice) == 0)
+		if(buscarArticuloVacio(articulos, tamArticulos, &indice) == 0)
 		{
-			pedirStringAlfabetico(bufferDescripcion, TAMDESCRIPCION, "\nIngrese descripcion: ", "\nERROR", 's');
-			pedirFlotante(&bufferMedida, 1, 1000, "\nIngrese medida: ", "ERROR");
-			pedirFlotante(&bufferPrecio, 1, 1000, "\nIngrese precio: ", "ERROR");
-			pedirRubro(rubros, tamRubros, &bufferRubroId, "\nIngrese rubro: ", "\nERROR");
+			pedirStringAlfabetico(bufferDescripcion, TAMDESCRIPCION, "\nIngrese la descripcion del articulo: ", "\nERROR, Ingrese solo letras y no mas de 30", 's');
+			pedirFlotante(&bufferMedida, 1, 9999999, "\nIngrese la medida del articulo: ", "ERROR, Ingrese solo numeros y maximo 9.999.999");
+			pedirFlotante(&bufferPrecio, 1, 9999999, "\nIngrese el precio del articulo: ", "ERROR, Ingrese solo numeros y maximo 9.999.999");
+			pedirRubro(rubros, tamRubros, &bufferRubroId, "\nIngrese el id del rubro en el que se encuentra el articulo: ", "\nERROR, El id ingresado no existe");
 
 			strncpy((*(articulos+indice)).descripcion,bufferDescripcion,TAMDESCRIPCION);
 			(*(articulos+indice)).medida = bufferMedida;
@@ -128,6 +128,9 @@ int altaArticulo(eArticulo* articulos,int tamArticulos,eRubro* rubros,int tamRub
 			(*(articulos+indice)).idArticulo = *idArticulo;
 
 			(*idArticulo)++;
+
+			retorno = 0;
+			printf("\nArticulo cargado con exito");
 		}
 	}
 	else
@@ -150,7 +153,7 @@ int listarUnArticulo(eArticulo unArticulo,eRubro* rubros,int tamRubros)
 		if(unArticulo.isEmpty == 1)
 		{
 			buscarRubro(rubros, tamRubros, unArticulo.rubroId, descripcion);
-			printf("|%-*d|%-*s|%-*.2f|%-*.2f|%-*s|\n",4,unArticulo.idArticulo,31,unArticulo.descripcion,20,unArticulo.medida,10,unArticulo.precio,15,descripcion);
+			printf("|%-*d|%-*s|%-*.2f|%-*.2f|%-*s|\n",4,unArticulo.idArticulo,31,unArticulo.descripcion,10,unArticulo.medida,10,unArticulo.precio,15,descripcion);
 		}
 
 		retorno = 0;
@@ -171,15 +174,17 @@ int listarArticulos(eArticulo* articulos,int tamArticulos,eRubro* rubros,int tam
 
 	if(articulos != NULL && tamArticulos > 0 && rubros != NULL && tamRubros > 0)
 	{
-		printf("\n+----+-------------------------------+--------------------+----------+---------------+");
-		printf("\n|%-*s|%-*s|%-*s|%-*s|%-*s|",4,"ID",31,"Descripcion",20,"Medida",10,"Precio",15,"Rubro");
-		printf("\n+----+-------------------------------+--------------------+----------+---------------+\n");
+		ordenarArticulosPorRubroDescripcion(articulos, tamArticulos, rubros, tamRubros);
+
+		printf("\n+----+-------------------------------+----------+----------+---------------+");
+		printf("\n|%-*s|%-*s|%-*s|%-*s|%-*s|",4,"ID",31,"Descripcion",10,"Medida",10,"Precio",15,"Rubro");
+		printf("\n+----+-------------------------------+----------+----------+---------------+\n");
 
 		for(int i=0;i<tamArticulos;i++)
 		{
 			listarUnArticulo(*(articulos+i),rubros,tamRubros);
 		}
-		printf("+----+-------------------------------+--------------------+----------+---------------+\n");
+		printf("+----+-------------------------------+----------+----------+---------------+\n");
 
 		retorno = 0;
 	}
@@ -232,7 +237,7 @@ int mostrarRubros(eRubro* rubros,int tamRubros)
 	{
 
 		printf("\n+----+-------------------------------+");
-		printf("\n|%-*s|%-*s|",4,"Id",31,"Descripcion");
+		printf("\n|%-*s|%-*s|",4,"Id",31,"Rubro");
 		printf("\n+----+-------------------------------+");
 		for(int i=0;i<tamRubros;i++)
 		{
@@ -264,7 +269,7 @@ int pedirRubro(eRubro* rubros,int tamRubros,int* respuesta,char mensaje[],char m
 
 		do
 		{
-			pedirEntero(&bufferRubro, 0, 1000, mensaje, mensajeError);
+			pedirEntero(&bufferRubro, 0, 9999, mensaje, mensajeError);
 
 			for(int i=0;i<tamRubros;i++)
 			{
@@ -296,3 +301,249 @@ int pedirRubro(eRubro* rubros,int tamRubros,int* respuesta,char mensaje[],char m
 }
 
 //-------------------------------------------------------------------------------------------------------------------------
+
+int ordenarArticulosPorRubroDescripcion(eArticulo* articulos, int tamArticulos,eRubro* rubros,int tamRubros)
+{
+	int retorno;
+	eArticulo articuloAuxiliar;
+	char primerRubro[TAMDESCRIPCION];
+	char segundoRubro[TAMDESCRIPCION];
+
+	if(articulos != NULL && tamArticulos > 0 && rubros != NULL && tamRubros)
+	{
+		for(int i=0;i<tamArticulos-1;i++)
+		{
+			for(int j=i+1;j<tamArticulos;j++)
+			{
+				buscarRubro(rubros, tamRubros, (*(articulos+i)).rubroId, primerRubro);
+				buscarRubro(rubros, tamRubros, (*(articulos+j)).rubroId, segundoRubro);
+
+				if( strcmp(primerRubro,segundoRubro) > 0 ||
+				   (strcmp(primerRubro,segundoRubro) == 0 && strcmp((*(articulos+i)).descripcion,(*(articulos+j)).descripcion) > 0))
+				{
+					articuloAuxiliar = *(articulos+j);
+					*(articulos+j) = *(articulos+i);
+					*(articulos+i) = articuloAuxiliar;
+				}
+			}
+		}
+
+		retorno = 0;
+	}
+	else
+	{
+		retorno = -1;
+	}
+
+	return retorno;
+}
+
+//-------------------------------------------------------------------------------------------------------------------------
+
+int buscarArticulo(eArticulo* articulos,int tamArticulos,int id,int* indice)
+{
+	int retorno;
+
+	if(articulos != NULL && tamArticulos > 0 && indice != NULL)
+	{
+		for(int i=0;i<tamArticulos;i++)
+		{
+			if((*(articulos+i)).idArticulo == id && (*(articulos+i)).isEmpty == 1)
+			{
+				*indice = i;
+				retorno = 0;
+				break;
+			}
+			else
+			{
+				retorno = 1;
+			}
+		}
+	}
+	else
+	{
+		retorno = -1;
+	}
+
+	return retorno;
+}
+
+//-------------------------------------------------------------------------------------------------------------------------
+
+int darDeBajaArticulo(eArticulo* articulos,int tamArticulos,eRubro* rubros,int tamRubros)
+{
+	int retorno;
+	char continuar;
+	int id;
+	int indice;
+
+	if(articulos != NULL && tamArticulos > 0 && rubros != NULL && tamRubros > 0)
+	{
+		listarArticulos(articulos, tamArticulos, rubros, tamRubros);
+
+		pedirEntero(&id, 1000, 9999, "\n---Ingrese el id del articulo que desea dar de baja: ", "\nERROR, Ingrese un numero entre 1000 y 9999");
+
+		if(buscarArticulo(articulos, tamArticulos, id, &indice) == 0)
+		{
+			printf("\n-Seleccion = ");
+			listarUnArticulo(*(articulos+indice), rubros, tamRubros);
+			pedirCharDosOpciones(&continuar, 's', 'n', "\nEsta seguro que quiere dar de baja este articulo? (s/n): ","\nERROR, Ingrese 's' o 'n'");
+
+			if(continuar == 's')
+			{
+				(*(articulos+indice)).isEmpty = 0;
+				printf("\nArticulo dado de baja con exito");
+			}
+			else
+			{
+				printf("\nBaja de articulo cancelada con exito");
+			}
+
+			retorno = 0;
+		}
+		else
+		{
+			printf("\nEse articulo no existe");
+			retorno = 1;
+		}
+	}
+	else
+	{
+		retorno = -1;
+	}
+
+	return retorno;
+}
+
+//-------------------------------------------------------------------------------------------------------------------------
+
+int mostrarMenuModificacion(char* opcion)
+{
+	int retorno;
+	char buffer;
+
+	if(opcion != NULL)
+	{
+		printf("\n\n+------------------------+");
+		printf("\n|    %-*s|",20,"MENU Modificacion");
+		printf("\n+------------------------+");
+		printf("\n| %-*s|",23,"A.Modificar medida");
+		printf("\n| %-*s|",23,"B.Modificar precio");
+		printf("\n| %-*s|",23,"C.Volver");
+		printf("\n+------------------------+");
+
+		pedirCaracter(&buffer, 'A', 'C', "\n---Ingrese que desea modificar: ", "\nERROR, Ingrese la letra de la opcion que desea modificar");
+
+		*opcion = buffer;
+
+		retorno = 0;
+	}
+	else
+	{
+		retorno = -1;
+	}
+
+	return retorno;
+}
+
+//-------------------------------------------------------------------------------------------------------------------------
+
+int modificarArticulo(eArticulo* articulos,int tamArticulos,eRubro* rubros,int tamRubros)
+{
+	int retorno;
+	int id;
+	int indice;
+
+	if(articulos != NULL && tamArticulos > 0 && rubros != NULL && tamRubros > 0)
+	{
+		listarArticulos(articulos, tamArticulos, rubros, tamRubros);
+
+		pedirEntero(&id, 1000, 9999, "\n---Ingrese el id del empleado que desea modificar: ", "\nERROR, Ingrese un numero entre 1000 y 9999");
+
+		if(buscarArticulo(articulos, tamArticulos, id, &indice) == 0)
+		{
+			printf("\n-Seleccion = ");
+			listarUnArticulo(*(articulos+indice), rubros, tamRubros);
+			opcionesModificacionArticulo(&(*(articulos+indice)));
+		}
+		else
+		{
+			printf("\nEse empleado no existe");
+		}
+
+		retorno = 0;
+	}
+	else
+	{
+		retorno = -1;
+	}
+
+	return retorno;
+}
+
+//-------------------------------------------------------------------------------------------------------------------------
+
+int opcionesModificacionArticulo(eArticulo* unArticulo)
+{
+	int retorno;
+	float bufferMedida;
+	float bufferPrecio;
+	char opcion;
+	char confirmar;
+
+	if(unArticulo != NULL)
+	{
+		do
+		{
+			mostrarMenuModificacion(&opcion);
+
+			switch(opcion)
+			{
+				case 'A': //Medida
+
+					pedirFlotante(&bufferMedida, 1, 9999999, "\nIngrese la nueva medida: ", "\nERROR, Ingrese un numero entre 1 y 9.999.999");
+
+					pedirCharDosOpciones(&confirmar, 's', 'n', "\nEsta seguro que quiere modificar la medida? (s/n): ", "\nERROR, Ingrese 's' o 'n'");
+					if(confirmar == 's')
+					{
+						(*unArticulo).medida = bufferMedida;
+					}
+					else
+					{
+						printf("\nModificacion cancelada");
+					}
+				break;
+
+				case 'B': //Precio
+
+					pedirFlotante(&bufferPrecio, 1, 9999999, "\nIngrese el nuevo precio: ", "\nERROR, Ingrese un numero entre 1 y 9.999.999");
+
+					pedirCharDosOpciones(&confirmar, 's', 'n', "\nEsta seguro que quiere modificar el precio? (s/n): ", "\nERROR, Ingrese 's' o 'n'");
+					if(confirmar == 's')
+					{
+						(*unArticulo).precio = bufferPrecio;
+					}
+					else
+					{
+						printf("\nModificacion cancelada");
+					}
+				break;
+
+				default:
+
+					printf("\nVolviendo...");
+				break;
+			}
+		}while(opcion != 'C');
+
+		retorno = 0;
+	}
+	else
+	{
+		retorno = -1;
+	}
+
+	return retorno;
+}
+
+

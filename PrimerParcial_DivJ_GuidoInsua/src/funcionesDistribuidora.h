@@ -35,14 +35,20 @@ typedef struct
 	int isEmpty;
 }eVenta;
 
-int mostrarMenu(int* opcion);
+int mostrarMenu(char* opcion);
 int iniciarIsEmpty(eArticulo* articulos,int tamArticulos,eVenta* ventas,int tamVentas);
-int buscarArticulo(eArticulo* articulos,int tamArticulos,int* indice);
+int buscarArticuloVacio(eArticulo* articulos,int tamArticulos,int* indice);
 int altaArticulo(eArticulo* articulos,int tamArticulos,eRubro* rubros,int tamRubros,int* idArticulo);
 int listarUnArticulo(eArticulo unArticulo,eRubro* rubros,int tamRubros);
 int listarArticulos(eArticulo* articulos,int tamArticulos,eRubro* rubros,int tamRubros);
 int buscarRubro(eRubro* rubros,int tamRubros,int idUnRubro,char* descripcion);
 int mostrarRubros(eRubro* rubros,int tamRubros);
 int pedirRubro(eRubro* rubros,int tamRubros,int* respuesta,char mensaje[],char mensajeError[]);
+int ordenarArticulosPorRubroDescripcion(eArticulo* articulos, int tamArticulos,eRubro* rubros,int tamRubros);
+int buscarArticulo(eArticulo* articulos,int tamArticulos,int id,int* indice);
+int darDeBajaArticulo(eArticulo* articulos,int tamArticulos,eRubro* rubros,int tamRubros);
+int mostrarMenuModificacion(char* opcion);
+int modificarArticulo(eArticulo* articulos,int tamArticulos,eRubro* rubros,int tamRubros);
+int opcionesModificacionArticulo(eArticulo* unArticulo);
 
 #endif /* FUNCIONESDISTRIBUIDORA_H_ */

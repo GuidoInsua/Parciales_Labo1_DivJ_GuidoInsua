@@ -319,6 +319,43 @@ int pedirStringAlfabetico(char cadena[], int tam, char mensaje[], char mensajeEr
 
 //-------------------------------------------------------------------------------------------------------------------------
 
+int pedirCaracter(char* direccion, char minimo, char maximo, char* mensaje, char* mensajeError)
+{
+	int retorno;
+	char bufferChar;
+
+	if(direccion != NULL && mensaje != NULL && mensajeError != NULL)
+	{
+		do
+		{
+			printf("%s",mensaje);
+			fflush(stdin);
+			scanf("%c",&bufferChar);
+
+			bufferChar = toupper(bufferChar);
+
+			if(bufferChar >= minimo && bufferChar <= maximo)
+			{
+				*direccion = bufferChar;
+				retorno = 0;
+			}
+			else
+			{
+				printf("%s",mensajeError);
+				retorno = 1;
+			}
+		}while(retorno != 0);
+	}
+	else
+	{
+		retorno = -1;
+	}
+
+	return retorno;
+}
+
+//-------------------------------------------------------------------------------------------------------------------------
+
 int pedirCharDosOpciones(char* direccion, char opcionUno, char opcionDos, char mensaje[], char mensajeError[])
 {
 	int retorno;
@@ -331,6 +368,7 @@ int pedirCharDosOpciones(char* direccion, char opcionUno, char opcionDos, char m
 			printf("%s",mensaje);
 			fflush(stdin);
 			scanf("%c",&bufferChar);
+
 			if(bufferChar == opcionUno || bufferChar == opcionDos)
 			{
 				*direccion = bufferChar;
@@ -341,7 +379,6 @@ int pedirCharDosOpciones(char* direccion, char opcionUno, char opcionDos, char m
 				printf("%s",mensajeError);
 				retorno = 1;
 			}
-
 		}while(retorno != 0);
 	}
 	else
