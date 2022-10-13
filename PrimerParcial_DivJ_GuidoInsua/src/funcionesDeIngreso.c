@@ -369,6 +369,8 @@ int pedirCharDosOpciones(char* direccion, char opcionUno, char opcionDos, char m
 			fflush(stdin);
 			scanf("%c",&bufferChar);
 
+			bufferChar = tolower(bufferChar);
+
 			if(bufferChar == opcionUno || bufferChar == opcionDos)
 			{
 				*direccion = bufferChar;

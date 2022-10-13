@@ -277,7 +277,7 @@ int opcionDarBaja(eArticulo* articulos)
 
 	if(articulos != NULL)
 	{
-		pedirCharDosOpciones(&continuar, 's', 'n', "\nEsta seguro que desea dar de baja este articulo: ", "\nERROR, Ingrese 's' para si o 'n' para no");
+		pedirCharDosOpciones(&continuar, 's', 'n', "\nEsta seguro que desea dar de baja este articulo (s/n): ", "\nERROR, Ingrese 's' para si o 'n' para no");
 
 		if(continuar == 's')
 		{
