@@ -35,7 +35,10 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "funcionesDistribuidora.h"
+#include "funcionesFecha.h"
+#include "funcionesRubro.h"
+#include "funcionesArticulo.h"
+#include "funcionesVenta.h"
 #include "funcionesDeIngreso.h"
 
 #define TAMRUBROS 4
@@ -81,7 +84,7 @@ int main(void)
 
 				if(existeArticulo(articulos, TAMARTICULOS) == 0)
 				{
-					modificarArticulo(articulos, TAMARTICULOS, rubros, TAMRUBROS);
+					modificarArticulo(articulos, TAMARTICULOS, rubros, TAMRUBROS, opcionModificar);
 				}
 				else
 				{
@@ -93,7 +96,7 @@ int main(void)
 
 				if(existeArticulo(articulos, TAMARTICULOS) == 0)
 				{
-					darDeBajaArticulo(articulos, TAMARTICULOS, rubros, TAMRUBROS);
+					modificarArticulo(articulos, TAMARTICULOS, rubros, TAMRUBROS, opcionDarBaja);
 				}
 				else
 				{
@@ -169,7 +172,7 @@ int main(void)
 			break;
 		}
 
-	}while(opcion != 9);
+	}while(opcion != 'I');
 
 
 	return 0;
