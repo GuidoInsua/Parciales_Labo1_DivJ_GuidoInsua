@@ -4,6 +4,8 @@
 #include <string.h>
 #include <ctype.h>
 
+//-------------------------------------------------------------------------------------------------------------------------
+
 static int miFgets(char*,int);
 static int miFgets(char* cadena, int tam)
 {
